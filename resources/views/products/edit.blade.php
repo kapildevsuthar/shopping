@@ -6,11 +6,12 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Product Page') }}</div>
+{{-- {{dd($product)}} --}}
                 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('products.store') }}">
+                    <form method="POST" action="/products/{{$product['id']}}">
                         @csrf
-
+                        @method('PATCH')
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Product name') }}</label>
 
@@ -22,10 +23,9 @@
 
                         <div class="row mb-3">
                             <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('description') }}</label>
-
                             <div class="col-md-6">
-                                <input id="description" type="text" class="form-control " name="description"  value = {{($product->description)}} placeholder = "Enter product description">
-
+                                {{-- <input id="description" type="text" class="form-control " name="description"  value =  placeholder = "Enter product description"> --}}
+                                <textarea id="description"  class="form-control " name="description"   >{{$product['description']}}</textarea>
                             </div>
                         </div>
 

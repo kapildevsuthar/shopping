@@ -92,17 +92,41 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        // dd($request->name);
+        // dd($product->name);
+        $validated = $request->validate([
+            'name' => ['required', 'max:255'],
+            'description' => [],
+            'mrp' => [],
+            'price' => [],
+            'discount' => [],
+            'cgst' => [],
+            'sgst' => [],
+        ]);
+
+        // Assign user_id to the authenticated user's ID
+        // $validated['user_id'] = Auth::id();
+
+        // Create a new product record in the database using Eloquent ORM
+        
+        $product->update($validated);
+
+        // Redirect back to the products page with a success message
+        return redirect("/products")->with("success", "Data has been saved successfully");
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage.  
      *
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
-    {
-        //
-    }
+        public function destroy(Product $product)
+        {
+            dd($product);
+            $product->delete();
+
+            // Redirect the user to a different page with a success message
+            return redirect()->route('products.index')->with('success', 'Product deleted successfully');
+        }
 }
