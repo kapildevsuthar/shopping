@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+{{-- @dd($data); --}}
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -25,7 +26,15 @@
 
                             </div>
                         </div>
-
+    <div class="mb-3">
+        <label for="category" class="col-md-4 col-form-label">{{ __('Product category name') }}</label>
+        <select name="selected_values[]" multiple>
+            @foreach($data as $val)
+                <option value="{{ $val->id }}">{{ $val->name }}</option>
+            @endforeach
+        </select>
+</div>
+                     
 
                         <div class="row mb-3">
                             <label for="mrp" class="col-md-4 col-form-label text-md-end">{{ __('MRP') }}</label>

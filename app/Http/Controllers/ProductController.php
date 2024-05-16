@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Product_category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,7 +28,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $data = Category::all();
+        // dd($data);
+        return view('products.create',['data'=>$data]);
     }
 
     /**
@@ -38,6 +41,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         // Validate the request data
         $validated = $request->validate([
             'name' => ['required', 'max:255'],
@@ -51,9 +55,15 @@ class ProductController extends Controller
 
         // Assign user_id to the authenticated user's ID
         $validated['user_id'] = Auth::id();
-
+        $value= $request->validate([
+'product_id' =>[],
+'category_id' =>[],
+        ]);
+        $value['product_id']= $request;
         // Create a new product record in the database using Eloquent ORM
-        Product::create($validated);
+       $data= Product::create($validated);
+       dd($data);
+        Product_category::create($validated);
 
         // Redirect back to the products page with a success message
         return redirect("/products")->with("success", "Data has been saved successfully");

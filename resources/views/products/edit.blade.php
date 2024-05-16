@@ -28,6 +28,15 @@
                                 <textarea id="description"  class="form-control " name="description"   >{{$product['description']}}</textarea>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label for="category" class="col-md-4 col-form-label">{{ __('Product category name') }}</label>
+                    <select multiple>
+                            @foreach($data as $val){
+                    <option>{{$val->name}}</option>
+                            }
+                            @endforeach
+                    </select>
+                    </div>
 
                         <div class="row mb-3">
                             <label for="mrp" class="col-md-4 col-form-label text-md-end">{{ __('mrp') }}</label>

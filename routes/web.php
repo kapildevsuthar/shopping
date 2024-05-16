@@ -19,6 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/kapil',function (){
+    return view('my');
+});
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
