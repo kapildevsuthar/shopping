@@ -17,11 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->longText('description')->nullable();
-            $table->integer('mrp');
             $table->integer('price');
             $table->integer('discount')->nullable();
             $table->integer('sgst')->nullable();
             $table->integer('cgst')->nullable();
+            $table->integer('net_price');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete(null);
             $table->timestamps();

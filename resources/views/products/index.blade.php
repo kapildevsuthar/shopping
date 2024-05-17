@@ -20,11 +20,11 @@
                     <th>S.no.</th>
                     <th>Product Name</th>
                     <th>Description</th>
-                    <th>MRP</th>
                     <th>Price</th>
                     <th>Discount</th>
                     <th>CGST</th>
                     <th>SGST</th>
+                    <th>NetPrice</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -35,11 +35,11 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $info['name'] }}</td>
                     <td>{{ $info['description'] }}</td>
-                    <td>{{ $info['mrp'] }}</td>
                     <td>{{ $info['price'] }}</td>
                     <td>{{ $info['discount'] }}</td>
                     <td>{{ $info['cgst'] }}</td>
                     <td>{{ $info['sgst'] }}</td>
+                    <td>{{ $info['net_price'] }}</td>
                     <td><a href="/products/{{ $info["id"] }}/edit">Edit</a></td>
                     <td><input type="checkbox" name="product_ids[]" value="{{ $info['id'] }}"></td>
                 </tr>

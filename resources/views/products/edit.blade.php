@@ -28,31 +28,23 @@
                                 <textarea id="description"  class="form-control " name="description"   >{{$product['description']}}</textarea>
                             </div>
                         </div>
+                        {{dd($ProductCategory)}}
                         <div class="mb-3">
                             <label for="category" class="col-md-4 col-form-label">{{ __('Product category name') }}</label>
                     <select multiple>
                             @foreach($data as $val){
                     <option>{{$val->name}}</option>
+                    
                             }
                             @endforeach
                     </select>
                     </div>
 
                         <div class="row mb-3">
-                            <label for="mrp" class="col-md-4 col-form-label text-md-end">{{ __('mrp') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="mrp" type="number" class="form-control " name="mrp"  value = {{$product['mrp']}} min= 0  placeholder = "Enter mrp">
-
-                            </div>
-                        </div>
-
-
-                        <div class="row mb-3">
                             <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('price') }}</label>
 
                             <div class="col-md-6">
-                                <input id="price" type="number" class="form-control " name="price" min= 0  value = {{$product['price']}} placeholder = "Enter price">
+                                <input id="price" type="number" class="form-control " name="price"  value = {{$product['price']}} min= 0  placeholder = "Enter price">
 
                             </div>
                         </div>
@@ -85,6 +77,15 @@
 
                             <div class="col-md-6">
                                 <input id="sgst" type="number" class="form-control " name="sgst" min = 0 max = 100  value = {{$product['sgst']}} placeholder = "Enter sgst">
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="net_price" class="col-md-4 col-form-label text-md-end">{{ __('net_price') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="net_price" type="number" class="form-control " name="net_price" min= 0  value = {{$product['net_price']}} placeholder = "Enter net_price">
 
                             </div>
                         </div>

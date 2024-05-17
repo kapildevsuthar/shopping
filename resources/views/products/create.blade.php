@@ -37,9 +37,9 @@
                      
 
                         <div class="row mb-3">
-                            <label for="mrp" class="col-md-4 col-form-label text-md-end">{{ __('MRP') }}</label>
+                            <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('Price') }}</label>
                             <div class="col-md-6">
-                                <input id="mrp" type="number" class="form-control" name="mrp" min="0" placeholder="Enter MRP" oninput="calculatePrice()">
+                                <input id="price" type="number" class="form-control" name="price" min="0" placeholder="Enter Price" oninput="calculatePrice()">
                             </div>
                         </div>
 
@@ -50,12 +50,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('Price') }}</label>
-                            <div class="col-md-6">
-                                <input id="price" type="number" class="form-control" name="price" min="0" placeholder="Price" readonly>
-                            </div>
-                        </div>
+     
                         <div class="row mb-3">
                             <label for="cgst" class="col-md-4 col-form-label text-md-end">{{ __('CGST') }}</label>
 
@@ -74,6 +69,12 @@
 
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label for="net_price" class="col-md-4 col-form-label text-md-end">{{ __('Net Price') }}</label>
+                            <div class="col-md-6">
+                                <input id="net_price" type="hidden" readonly class="form-control" name="net_price" min="0" placeholder="Net Price" >
+                            </div>
+                        </div>
 
 
                         <!-- Other input fields... -->
@@ -90,14 +91,22 @@
     </div>
 </div>
 <script>
+<script>
     function calculatePrice() {
-        var mrp = parseFloat(document.getElementById('mrp').value);
+        var mrp = parseFloat(document.getElementById('Price').value);
         var discount = parseFloat(document.getElementById('discount').value);
+        var cgst = parseFloat(document.getElementById('cgst').value);
 
-        if (!isNaN(mrp) && !isNaN(discount)) {
-            var price = mrp - (mrp * discount / 100);
-            document.getElementById('price').value = price.toFixed(2);
-        }
+        // Calculate the discounted price
+        var discountedPrice = Price - (Price * (discount / 100));
+
+        // Calculate the total price including CGST
+        var totalPrice = discountedPrice + (discountedPrice * (cgst / 100));
+
+        // Set the calculated price in the price input field
+        document.getElementById('Net Price').value = NetPrice.toFixed(2);
     }
+</script>
+
 </script>
 @endsection

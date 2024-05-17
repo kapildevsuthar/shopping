@@ -41,30 +41,33 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         // Validate the request data
         $validated = $request->validate([
             'name' => ['required', 'max:255'],
             'description' => [],
-            'mrp' => [],
             'price' => [],
             'discount' => [],
             'cgst' => [],
             'sgst' => [],
+            'net_price' => [],
         ]);
+        $price= $request->price;
+        $discount= $request->discount;
+        $cgst= $request->cgst;
+        $sgst= $request->sgst;
 
+        $validated['net_price']= $price -($price*$discount/100)+ ($price*$cgst/100 )+ ($price*$sgst/100);
         // Assign user_id to the authenticated user's ID
         $validated['user_id'] = Auth::id();
-        $value= $request->validate([
-'product_id' =>[],
-'category_id' =>[],
-        ]);
-        $value['product_id']= $request;
         // Create a new product record in the database using Eloquent ORM
        $data= Product::create($validated);
-       dd($data);
-        Product_category::create($validated);
-
+       foreach($request->selected_values as $cid){
+       $info=[
+        'product_id' =>$data['id'],
+'category_id' =>$cid,
+       ];
+        Product_category::create($info);
+    }
         // Redirect back to the products page with a success message
         return redirect("/products")->with("success", "Data has been saved successfully");
     }
@@ -90,7 +93,9 @@ class ProductController extends Controller
     {
         // $category=Category::find($id);
         // dd($product); 
-        return (view("products.edit",compact('product')));
+        $data = Category::all();
+        $ProductCategory = Product_category::all();
+        return (view("products.edit",compact('product','data','ProductCategory')));
     }
 
     /**
