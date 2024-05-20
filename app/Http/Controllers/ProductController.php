@@ -93,12 +93,16 @@ class ProductController extends Controller
     {
         // $category=Category::find($id);
         // dd($product); 
+        // $data = $product->categoryids();
+        // dd($data);
         $data = Category::all();
         $ProductCategory = Product_category::all();
-        return (view("products.edit",compact('product','data','ProductCategory')));
+        // dd($product->categoryids);
+        // $product = Product::find()
+        return (view("products.edit",compact('product','data')));
     }
 
-    /**
+    /*
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
