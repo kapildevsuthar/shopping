@@ -112,15 +112,16 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         // dd($request->name);
-        // dd($product->name);
+        // dd($request);
         $validated = $request->validate([
             'name' => ['required', 'max:255'],
             'description' => [],
-            'mrp' => [],
+            // 'mrp' => [],
             'price' => [],
             'discount' => [],
             'cgst' => [],
             'sgst' => [],
+            'net_price' => [],
         ]);
 
         // Assign user_id to the authenticated user's ID
@@ -144,6 +145,7 @@ class ProductController extends Controller
         {
             dd($product);
             $product->delete();
+                
 
             // Redirect the user to a different page with a success message
             return redirect()->route('products.index')->with('success', 'Product deleted successfully');

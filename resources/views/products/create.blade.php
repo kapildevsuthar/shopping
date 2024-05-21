@@ -80,7 +80,9 @@
         <input id="net_price" type="text" readonly class="form-control" name="net_price" min="0" placeholder="Net Price">
     </div>
 </div>
-<button type="submit" class="btn btn-success btn-block mt-2">Submit</button>
+<div class="d-flex align-items-center justify-content-center">
+<button type="submit" class="btn btn-primary btn-block mt-2 ">Submit</button>
+</div>
 
 
 
@@ -101,9 +103,7 @@ function calculatePrice() {
     if (gstType === 'cgst_sgst') {
         cgst = parseFloat(document.getElementById('cgst').value) || 0;
         sgst = parseFloat(document.getElementById('sgst').value) || 0;
-    } else {
-        igst = parseFloat(document.getElementById('igst').value) || 0;
-    }
+    } 
 
     const discountAmount = price * (discount / 100);
     const priceAfterDiscount = price - discountAmount;

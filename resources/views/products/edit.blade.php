@@ -50,7 +50,7 @@
                             <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('price') }}</label>
 
                             <div class="col-md-6">
-                                <input id="price" type="number" class="form-control " name="price"  value = {{$product['price']}} min= 0  placeholder = "Enter price">
+                                <input id="price" type="number" class="form-control " name="price" oninput="calculatePrice()" value = {{$product['price']}} min= 0  placeholder = "Enter price">
 
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                             <label for="discount" class="col-md-4 col-form-label text-md-end">{{ __('discount') }}</label>
 
                             <div class="col-md-6">
-                                <input id="discount" type="number" class="form-control " name="discount"  value = {{$product['discount']}} min = 0 max = 100 placeholder = "Enter discount">
+                                <input id="discount" oninput="calculatePrice()" type="number" class="form-control " name="discount"  value = {{$product['discount']}} min = 0 max = 100 placeholder = "Enter discount">
 
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                         <div class="row mb-3">
                             <label for="GST" class="col-md-4 col-form-label text-md-end">{{ __('GST') }}</label>
                             <div class="col-md-6">
-                                <input class="form-control" type="text" list="gst" name="gstnumber" id="gstInput" value="{{$product['GST']}}" oninput="divideGST()" placeholder="Select GST rate">
+                                <input class="form-control"  type="text" list="gst" name="gstnumber" id="gstInput" value="{{$product['cgst'] + $product['sgst']}}" oninput="divideGST()" placeholder="Select GST rate">
                                 <datalist id="gst">
                                     <option value="18"></option>
                                     <option value="12"></option>
@@ -84,7 +84,7 @@
                             <div class="row mb-3">
                                 <label for="cgst" class="col-md-4 col-form-label text-md-end">{{ __('CGST') }}</label>
                                 <div class="col-md-6">
-                                    <input id="cgst" type="number" class="form-control" name="cgst" min="0" max="100" placeholder="Enter CGST" value = {{$product['cgst']}} readonly>
+                                    <input id="cgst" type="number" class="form-control"  name="cgst" min="0" max="100" placeholder="Enter CGST" value = {{$product['cgst']}} readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -126,6 +126,7 @@
         const halfGST = gstValue / 2;
         document.getElementById('cgst').value = halfGST;
         document.getElementById('sgst').value = halfGST;
+        calculatePrice()
     }
     
     function calculatePrice() {

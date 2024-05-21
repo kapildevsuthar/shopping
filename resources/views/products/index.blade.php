@@ -9,10 +9,11 @@
     @endif
 
     <div class="mb-3">
-        <form id="deleteForm" action="{{ url('/delete-all') }}" method="POST">
+           <form action="{{ route('products.destroy', $products->id) }}" method="POST">
             @csrf
-            <a href="/products/create" class="btn btn-success">Add</a>
-            <button type="button" id="deleteButton" class="btn btn-danger float-end">Delete</button>
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger" id="deleteButton">Delete</button>
+            <a href="{{ route('product.index') }}" class="btn btn-secondary">Cancel</a>
         </form>
         <table class="table table-striped border">
             <thead class="table-primary">
