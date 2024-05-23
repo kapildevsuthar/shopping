@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,5 +28,10 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('/category',CategoryController::class);
 Route::resource('/products',ProductController::class);
-
+// Route::delete('/category/delete',[CategoryController::class,'deleted']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+use App\Http\Controllers\ProductMediaController;
+
+Route::get('/products/{product}/media/create', [ProductMediaController::class, 'create'])->name('product_media.create');
+Route::post('/products/{product}/media', [ProductMediaController::class, 'store'])->name('product_media.store');

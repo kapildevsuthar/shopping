@@ -121,6 +121,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        dd($category);
+        // dd($category);
+        $category->delete();
+        return redirect('/category');
     }
+    // public function deleted(Category $category)
+    // {
+    //     dd($category);
+    // }
 }

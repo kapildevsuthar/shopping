@@ -9,13 +9,9 @@
     @endif
 
     <div class="mb-3">
-           <form action="{{ route('products.destroy', $products->id) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger" id="deleteButton">Delete</button>
-            <a href="{{ route('product.index') }}" class="btn btn-secondary">Cancel</a>
-        </form>
-        <table class="table table-striped border">
+        <a href="{{route('products.create')}}" class="btn btn-primary mb-3" > Add Product</a>
+        
+          <table class="table table-striped border">
             <thead class="table-primary">
                 <tr>
                     <th>S.no.</th>
@@ -42,7 +38,12 @@
                     <td>{{ $info['sgst'] }}</td>
                     <td>{{ $info['net_price'] }}</td>
                     <td><a href="/products/{{ $info["id"] }}/edit">Edit</a></td>
-                    <td><input type="checkbox" name="product_ids[]" value="{{ $info['id'] }}"></td>
+                    <td> <form action="/products/{{$info["id"]}}" method="post" id="deleteForm">
+                        @csrf
+                        @method('DELETE')
+                        <button id="deleteButton" class="btn btn-danger ">Delete</button>   
+                    </form>
+                   </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -50,22 +51,4 @@
     </div>
 </div>
 
-<script>
-    document.getElementById('deleteButton').onclick = function () {
-        var checkboxes = document.querySelectorAll('input[name="product_ids[]"]:checked');
-        if (checkboxes.length > 0) {
-            var confirmationMessage = checkboxes.length === 1 ?
-                'Are you sure you want to delete the selected product?' :
-                'Are you sure you want to delete the selected products?';
-                
-
-            var confirmation = confirm(confirmationMessage);
-            if (confirmation) {
-                document.getElementById('deleteForm').submit();
-            }
-        } else {
-            alert('Please select at least one product to delete.');
-        }
-    };
-</script>
 @endsection

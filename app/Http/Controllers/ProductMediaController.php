@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product_media;
+use App\Models\ProductMedia;
 use Illuminate\Http\Request;
 
 class ProductMediaController extends Controller
@@ -22,8 +23,9 @@ class ProductMediaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(ProductMedia $product)
     {
+        return view('product_media.create', compact('product'));
         //
     }
 
@@ -33,10 +35,26 @@ class ProductMediaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'media' => 'required|array',
+            'media.*' => 'file|mimes:jpeg,png,jpg,gif,mp4|max:20480',
+        ]);
+
+        foreach ($request->file('media') as $file) {
+            $path = $file->store('product_media', 'public');
+
+            ProductMedia::create([
+                'product_id' => $product->id,
+                'file_path' => $path,
+                'file_type' => $file->getClientOriginalExtension(),
+            ]);
+        }
+
+        return redirect()->route('products.show', $product)->with('success', 'Media uploaded successfully');
     }
+
 
     /**
      * Display the specified resource.
@@ -46,7 +64,7 @@ class ProductMediaController extends Controller
      */
     public function show(Product_media $product_media)
     {
-        //
+
     }
 
     /**

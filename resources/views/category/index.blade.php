@@ -9,6 +9,7 @@
     </div>
 @endif
     <div class="mb-3">
+        <a href="{{route('category.create')}}" class="btn btn-primary mb-3" > Add category </a>
         <table class="table table-striped border">
             <thead class = "table-primary">
                 <tr>
@@ -25,31 +26,21 @@
                             <td><a href="/category/{{$info["id"]}}/edit">Edit</a>
                                 
                             </td>
-                            <td><input type="checkbox" name="product_ids[]" value="{{ $info['id'] }}"></td>
+                            <td>
+                                <form action="/category/{{$info["id"]}}" method="post" id="deleteForm">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button id="deleteButton" class="btn btn-danger ">Delete</button>   
+                                </form>
+                                </td>
+                            {{-- <td><input type="checkbox" name="product_ids[]" value="{{ $info['id'] }}"></td> --}}
                         </tr>   
                         @endforeach
-                        <button type="button" id="deleteButton" class="btn btn-danger float-end">Delete</button>   
                 </tbody>
             </thead>
         </table>
+    
+        
     </div>
 </div>
-<script>
-document.getElementById('deleteButton').onclick = function () {
-    var checkboxes = document.querySelectorAll('input[name="product_ids[]"]:checked');
-    if (checkboxes.length > 0) {
-        var confirmationMessage = checkboxes.length === 1 ?
-            'Are you sure you want to delete the selected product?' :
-            'Are you sure you want to delete the selected products?';
-            
-
-        var confirmation = confirm(confirmationMessage);
-        if (confirmation) {
-            document.getElementById('deleteForm').submit();
-        }
-    } else {
-        alert('Please select at least one product to delete.');
-    }
-};
-</script>
 @endsection
