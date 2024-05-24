@@ -9,7 +9,7 @@
                 <div class="card-header">{{ __('Product Page') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('products.store') }}">
+                    <form  enctype="multipart/form-data" method="POST" action="{{ route('products.store') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -78,6 +78,15 @@
     <label for="net_price" class="col-md-4 col-form-label text-md-end">{{ __('Net Price') }}</label>
     <div class="col-md-6">
         <input id="net_price" type="text" readonly class="form-control" name="net_price" min="0" placeholder="Net Price">
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div>
+    {{-- <form action="/image-upload" > --}}
+        {{-- @csrf --}}
+        <input type="file" accept="image/*" multiple name="image">
+    {{-- </form> --}}
     </div>
 </div>
 <div class="d-flex align-items-center justify-content-center">

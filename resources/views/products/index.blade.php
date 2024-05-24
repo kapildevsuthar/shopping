@@ -14,8 +14,9 @@
           <table class="table table-striped border">
             <thead class="table-primary">
                 <tr>
-                    <th>S.no.</th>
+                    <th>S.no.</th>                    
                     <th>Product Name</th>
+                    <th>Image</th>
                     <th>Description</th>
                     <th>Price</th>
                     <th>Discount</th>
@@ -31,6 +32,7 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $info['name'] }}</td>
+                    <td>{{$info['']}}</td>
                     <td>{{ $info['description'] }}</td>
                     <td>{{ $info['price'] }}</td>
                     <td>{{ $info['discount'] }}</td>

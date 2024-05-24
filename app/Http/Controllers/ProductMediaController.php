@@ -35,7 +35,7 @@ class ProductMediaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Product $product)
+    public function store(Request $request, ProductMedia $product)
     {
         $request->validate([
             'media' => 'required|array',

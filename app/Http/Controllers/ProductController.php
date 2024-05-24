@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Product_category;
+use Faker\Guesser\Name;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,6 +43,12 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // Validate the request data
+        $files = $request->file('image');
+        $nameOfFile = $files->getClientOriginalName();
+        // dd($nameOfFile);
+        request()->image->move(public_path('image'), $nameOfFile);
+
+
         $validated = $request->validate([
             'name' => ['required', 'max:255'],
             'description' => [],
@@ -50,6 +57,7 @@ class ProductController extends Controller
             'cgst' => [],
             'sgst' => [],
             'net_price' => [],
+            'image'=>[]
         ]);
         $price= $request->price;
         $discount= $request->discount;
