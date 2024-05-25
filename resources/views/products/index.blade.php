@@ -9,7 +9,7 @@
     @endif
 
     <div class="mb-3">
-        <a href="{{route('products.create')}}" class="btn btn-primary mb-3" > Add Product</a>
+        <a href="{{route('products.create')}}" class="btn btn-primary mb-3" > Add Product </a>
         
           <table class="table table-striped border">
             <thead class="table-primary">
@@ -29,10 +29,34 @@
             </thead>
             <tbody>
                 @foreach ($data as $info)
+             
+                @php 
+                 $files=[];
+                 print_r($info->media);
+                if(is_array($info)){
+                 foreach($info as $sinfo){
+                     $files[]=$sinfo['file_path'];
+                 }
+                }
+            print_r($files);
+                @endphp
+
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td>
+                        
+                       
+                        {{ $loop->iteration }}</td>
                     <td>{{ $info['name'] }}</td>
-                    <td>{{$info['']}}</td>
+                    @if(false)
+                    <td>
+                        <img src="{{asset('image/'.$media['file_path'])}}" style="width:70px ; height:70px" alt="Img">
+                    </td>
+
+                    @else
+                    <td>
+                      No image
+                    </td>
+                    @endif
                     <td>{{ $info['description'] }}</td>
                     <td>{{ $info['price'] }}</td>
                     <td>{{ $info['discount'] }}</td>
@@ -40,6 +64,7 @@
                     <td>{{ $info['sgst'] }}</td>
                     <td>{{ $info['net_price'] }}</td>
                     <td><a href="/products/{{ $info["id"] }}/edit">Edit</a></td>
+
                     <td> <form action="/products/{{$info["id"]}}" method="post" id="deleteForm">
                         @csrf
                         @method('DELETE')

@@ -9,7 +9,8 @@
                 <div class="card-header">{{ __('Product Page') }}</div>
 
                 <div class="card-body">
-                    <form  enctype="multipart/form-data" method="POST" action="{{ route('products.store') }}">
+                    <form  enctype="multipart/form-data" method="POST" 
+                    action="{{ route('products.store') }}">
                         @csrf
 
                         <div class="row mb-3">

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
-use App\Models\Product_category;
 use Faker\Guesser\Name;
+use App\Models\Category;
+use App\Models\ProductMedia;
 use Illuminate\Http\Request;
+use App\Models\Product_category;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -18,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products.index',['data'=>Product::all()]);
+        return view('products.index',['data'=>Product::with('media')->get()]);
         
     }
 
@@ -43,10 +44,17 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // Validate the request data
-        $files = $request->file('image');
-        $nameOfFile = $files->getClientOriginalName();
+        $file = $request->file('image');
+        $ext = $file->getClientOriginalExtension();
+        $name = $file->getClientOriginalName();
+        // dd($ext);
+        $nameOfFile=time().'.'.$name;
+        $path='image';
+        $file->move($path,$nameOfFile);
+        // $file->move('image',$nameOfFile);
         // dd($nameOfFile);
-        request()->image->move(public_path('image'), $nameOfFile);
+        
+        // request()->image->move(public_path('image'), $nameOfFile);
 
 
         $validated = $request->validate([
@@ -63,7 +71,8 @@ class ProductController extends Controller
         $discount= $request->discount;
         $cgst= $request->cgst;
         $sgst= $request->sgst;
-
+        $file_type= $path.$nameOfFile;
+        
         $validated['net_price']= $price -($price*$discount/100)+ ($price*$cgst/100 )+ ($price*$sgst/100);
         // Assign user_id to the authenticated user's ID
         $validated['user_id'] = Auth::id();
@@ -72,9 +81,15 @@ class ProductController extends Controller
        foreach($request->selected_values as $cid){
        $info=[
         'product_id' =>$data['id'],
-'category_id' =>$cid,
+        'category_id' =>$cid,
        ];
         Product_category::create($info);
+
+        ProductMedia::create([
+        'product_id' =>$data['id'],
+            "file_path"=>$nameOfFile,
+            "file_type"=>$ext
+        ]);
     }
         // Redirect back to the products page with a success message
         return redirect("/products")->with("success", "Data has been saved successfully");

@@ -12,4 +12,7 @@ class Product extends Model
   public function categoryids(){
     return $this->hasMany(Product_category::class,'product_id','id');
   }
+  public function media(){
+    return $this->hasMany(ProductMedia::class,'product_id','id');
+  }
 }
