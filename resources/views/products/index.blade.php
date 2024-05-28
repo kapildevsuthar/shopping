@@ -28,35 +28,46 @@
                 </tr>
             </thead>
             <tbody>
+                {{-- @dd($data[26]); --}}
+                {{-- @dd($data[16]->media[0]->file_path); --}}
                 @foreach ($data as $info)
              
                 @php 
                  $files=[];
-                 print_r($info->media);
+                //  if(isset($info->media[0]->file_path)){
+                //     echo "hello";
+                //  }
+                //  else{
+                //     echo "hey";
+                //  }
                 if(is_array($info)){
                  foreach($info as $sinfo){
                      $files[]=$sinfo['file_path'];
                  }
                 }
-            print_r($files);
+                // print_r($files);
                 @endphp
 
                 <tr>
-                    <td>
-                        
-                       
-                        {{ $loop->iteration }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $info['name'] }}</td>
-                    @if(false)
+
+                    @if(isset($info->media[0]->file_path))
                     <td>
-                        <img src="{{asset('image/'.$media['file_path'])}}" style="width:70px ; height:70px" alt="Img">
+                        {{-- loop stsrt --}}
+                        @for($a=0 ;$a<count($info->media);$a++)
+                        <img src="{{asset('image/'.$info->media[$a]['file_path'])}}" style="width:70px ; height:70px" alt="Img">
+                        @endfor
+
                     </td>
 
                     @else
                     <td>
-                      No image
+                        <img src="{{asset('image/imgnotavl.png')}}" style="width:70px ; height:70px" alt="Img">
+                        
                     </td>
                     @endif
+
                     <td>{{ $info['description'] }}</td>
                     <td>{{ $info['price'] }}</td>
                     <td>{{ $info['discount'] }}</td>

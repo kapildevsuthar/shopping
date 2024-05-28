@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Create Category') }}</div>
 
                 <div class="card-body">
-                    <form action="{{ route('category.store') }}" method="POST">
+                    <form enctype="multipart/form-data" action="{{ route('category.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="name">Category Name:</label>
@@ -18,6 +18,16 @@
                             <label for="description">Description:</label>
                             <textarea id="description" name="description" class="form-control" rows="3" placeholder="Enter description"></textarea>
                         </div>
+                        
+<div class="row mb-3">
+    <div>
+    {{-- <form action="/image-upload" > --}}
+        {{-- @csrf --}}
+        <input type="file" accept="image/*"  name="image[]">
+    {{-- </form> --}}
+    </div>
+</div>
+
                         
                         <button type="submit" class="btn btn-success btn-block mt-2">Submit</button>
                     </form>

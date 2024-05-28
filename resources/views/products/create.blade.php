@@ -86,7 +86,7 @@
     <div>
     {{-- <form action="/image-upload" > --}}
         {{-- @csrf --}}
-        <input type="file" accept="image/*" multiple name="image">
+        <input type="file" accept="image/*" multiple name="image[]">
     {{-- </form> --}}
     </div>
 </div>

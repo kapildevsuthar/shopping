@@ -45,12 +45,16 @@ class ProductController extends Controller
     {
         // Validate the request data
         $file = $request->file('image');
-        $ext = $file->getClientOriginalExtension();
-        $name = $file->getClientOriginalName();
+
+        // print_r($file);
+
+
+        // $ext = $file->getClientOriginalExtension();
+        // $name = $file->getClientOriginalName();
         // dd($ext);
-        $nameOfFile=time().'.'.$name;
-        $path='image';
-        $file->move($path,$nameOfFile);
+        // $nameOfFile=time().'.'.$name;
+        // $path='image';
+        // $file->move($path,$nameOfFile);
         // $file->move('image',$nameOfFile);
         // dd($nameOfFile);
         
@@ -71,7 +75,7 @@ class ProductController extends Controller
         $discount= $request->discount;
         $cgst= $request->cgst;
         $sgst= $request->sgst;
-        $file_type= $path.$nameOfFile;
+        // $file_type= $path.$nameOfFile;
         
         $validated['net_price']= $price -($price*$discount/100)+ ($price*$cgst/100 )+ ($price*$sgst/100);
         // Assign user_id to the authenticated user's ID
@@ -85,12 +89,44 @@ class ProductController extends Controller
        ];
         Product_category::create($info);
 
-        ProductMedia::create([
-        'product_id' =>$data['id'],
-            "file_path"=>$nameOfFile,
-            "file_type"=>$ext
-        ]);
+        // ProductMedia::create([
+        // 'product_id' =>$data['id'],
+        //     "file_path"=>$nameOfFile,
+        //     "file_type"=>$ext
+        // ]);
     }
+
+
+// file uplaod code 
+
+foreach($file as $val){
+    // echo $val->getClientOriginalName();
+    // echo "<br>";
+
+    $ext = $val->getClientOriginalExtension();
+    $name = $val->getClientOriginalName();
+    $nameOfFile=time().'.'.$name;
+    $path='image';
+    $val->move($path,$nameOfFile);
+    // $val->move('image',$nameOfFile);
+
+// request()->image->move(public_path('image'), $nameOfFile);
+
+$file_type= $path.$nameOfFile;
+
+ProductMedia::create([
+    'product_id' =>$data['id'],
+        "file_path"=>$nameOfFile,
+        "file_type"=>$ext
+]);
+
+
+}
+
+
+
+
+
         // Redirect back to the products page with a success message
         return redirect("/products")->with("success", "Data has been saved successfully");
     }
@@ -122,6 +158,7 @@ class ProductController extends Controller
         $ProductCategory = Product_category::all();
         // dd($product->categoryids);
         // $product = Product::find()
+        
         return (view("products.edit",compact('product','data')));
     }
 
@@ -134,6 +171,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        $file = $request->file('image');
         // dd($request->name);
         // dd($request);
         $validated = $request->validate([
@@ -145,7 +183,30 @@ class ProductController extends Controller
             'cgst' => [],
             'sgst' => [],
             'net_price' => [],
+            'image' => []
         ]);
+        $product->update($validated);
+        foreach($file as $val){
+            // echo $val->getClientOriginalName();
+            // echo "<br>";
+        
+            $ext = $val->getClientOriginalExtension();
+            $name = $val->getClientOriginalName();
+            $nameOfFile=time().'.'.$name;
+            $path='image';
+            $val->move($path,$nameOfFile);
+            // $val->move('image',$nameOfFile);
+        
+        // request()->image->move(public_path('image'), $nameOfFile);
+        
+        $file_type= $path.$nameOfFile;
+        
+        ProductMedia::updateOrCreate([
+            'product_id' =>$data['id'],
+                "file_path"=>$nameOfFile,
+                "file_type"=>$ext
+        ]);
+        
 
         // Assign user_id to the authenticated user's ID
         // $validated['user_id'] = Auth::id();
@@ -157,7 +218,7 @@ class ProductController extends Controller
         // Redirect back to the products page with a success message
         return redirect("/products")->with("success", "Data has been saved successfully");
     }
-
+    }
     /**
      * Remove the specified resource from storage.  
      *
