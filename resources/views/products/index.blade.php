@@ -28,18 +28,10 @@
                 </tr>
             </thead>
             <tbody>
-                {{-- @dd($data[26]); --}}
-                {{-- @dd($data[16]->media[0]->file_path); --}}
                 @foreach ($data as $info)
              
                 @php 
                  $files=[];
-                //  if(isset($info->media[0]->file_path)){
-                //     echo "hello";
-                //  }
-                //  else{
-                //     echo "hey";
-                //  }
                 if(is_array($info)){
                  foreach($info as $sinfo){
                      $files[]=$sinfo['file_path'];
@@ -59,7 +51,7 @@
                         <img src="{{asset('image/'.$info->media[$a]['file_path'])}}" style="width:70px ; height:70px" alt="Img">
                         @endfor
 
-                    </td>
+                    </td>   
 
                     @else
                     <td>

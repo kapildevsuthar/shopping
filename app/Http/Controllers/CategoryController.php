@@ -16,7 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        
+        // return view('category.index',['data'=>Category::with('media')->get()]);
+
         return view('category.index',['data'=>Category::all()]);
     }
 
@@ -40,15 +41,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $file = $request->file('image');
        $validated = $request->validate([
         'name' => ['required','max:50'],
-        'description' =>[ 'max:255']
+        'description' =>[ 'max:255'],
+        'image'=>""
        ]);
-
-       $validated['user_id'] = Auth::id();
-        // dd($validated);
-
-    //    $validated['user_id'] = 1;
+    //    $ext = $file->getClientOriginalExtension();
+       
+       $nameOfFile=time().'_'.$request->image->getClientOriginalName();
+       //$path='image';
+       $request->image->move('image',$nameOfFile);
+      $validated['image']= $nameOfFile;
+       
+       $validated['user_id'] = 1;
         Category::create($validated);
     
         return redirect()->route('category.index')->with('success', 'Category created successfully.');

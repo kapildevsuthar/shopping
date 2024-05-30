@@ -21,10 +21,8 @@
                         
 <div class="row mb-3">
     <div>
-    {{-- <form action="/image-upload" > --}}
-        {{-- @csrf --}}
-        <input type="file" accept="image/*"  name="image[]">
-    {{-- </form> --}}
+        <input type="file" accept="image/*"  name="image">
+
     </div>
 </div>
 
