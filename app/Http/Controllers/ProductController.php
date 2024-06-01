@@ -105,7 +105,7 @@ foreach($file as $val){
 
     $ext = $val->getClientOriginalExtension();
     $name = $val->getClientOriginalName();
-    $nameOfFile=time().'.'.$name;
+    $nameOfFile=time().'_'.$name;
     $path='image';
     $val->move($path,$nameOfFile);
     // $val->move('image',$nameOfFile);
@@ -170,54 +170,54 @@ ProductMedia::create([
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product)
-    {
-        $file = $request->file('image');
-        // dd($request->name);
-        // dd($request);
-        $validated = $request->validate([
-            'name' => ['required', 'max:255'],
-            'description' => [],
-            'price' => [],
-            'discount' => [],
-            'cgst' => [],
-            'sgst' => [],
-            'net_price' => [],
-            'image' => []
-        ]);
-        $product->update($validated);
-        foreach($file as $val){
-            // echo $val->getClientOriginalName();
-            // echo "<br>";
-        
-            // $ext = $val->getClientOriginalExtension();
-            // $name = $val->getClientOriginalName();
-            // $nameOfFile=time().'.'.$name;
-            // $path='image';
-            // $val->move($path,$nameOfFile);
-            // // $val->move('image',$nameOfFile);
-        
-        // request()->image->move(public_path('image'), $nameOfFile);
-        
-        // $file_type= $path.$nameOfFile;
-        
-        // ProductMedia::update([
-        //     'product_id' =>$data['id'],
-        //         "file_path"=>$nameOfFile,
-        //         "file_type"=>$ext
-        // ]);
-        
+{
+    $files = $request->file('image');
 
-        // Assign user_id to the authenticated user's ID
-        // $validated['user_id'] = Auth::id();
+    $validated = $request->validate([
+        'name' => ['required', 'max:255'],
+        'description' => [],
+        'price' => [],
+        'discount' => [],
+        'cgst' => [],
+        'sgst' => [],
+        'net_price' => [],
+        'image' => []
+    ]);
 
-        // Create a new product record in the database using Eloquent ORM
-        
-        // $product->update($validated);
+    // Calculate the net price
+    $price = $request->price;
+    $discount = $request->discount;
+    $cgst = $request->cgst;
+    $sgst = $request->sgst;
+    $validated['net_price'] = $price - ($price * $discount / 100) + ($price * $cgst / 100) + ($price * $sgst / 100);
 
-        // Redirect back to the products page with a success message
-        // return redirect("/products")->with("success", "Data has been saved successfully");
+    // Update the product details
+    $product->update($validated);
+
+    // Handle image files if provided
+    if ($files) {
+        foreach ($files as $file) {
+            $ext = $file->getClientOriginalExtension();
+            $name = $file->getClientOriginalName();
+            $nameOfFile = time() . '_' . $name;
+            $path = 'image';
+            $file->move($path, $nameOfFile);
+
+            $file_type = $path . '/' . $nameOfFile;
+
+            // Create new media record
+            ProductMedia::create([
+                'product_id' => $product->id,
+                'file_path' => $nameOfFile,
+                'file_type' => $ext
+            ]);
+        }
     }
-    }
+
+    // Redirect back to the products page with a success message
+    return redirect("/products")->with("success", "Product updated successfully");
+}
+
     /**
      * Remove the specified resource from storage.  
      *

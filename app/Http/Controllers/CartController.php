@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+use App\Models\Product;
+// use App\Models\Cart;
+
 
 class CartController extends Controller
 {
@@ -35,8 +39,20 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $productId = $request->input('product_id');
+
+        // Here you would typically add the product to the cart for the authenticated user
+        // Example logic:
+        Cart::create([
+            'user_id' => auth()->id(),
+            'product_id' => $productId,
+            'quantity' => 1, // Example: default quantity
+        ]);
+
+        // Redirect back or wherever needed
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
+
 
     /**
      * Display the specified resource.

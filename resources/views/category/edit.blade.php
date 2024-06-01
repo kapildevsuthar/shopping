@@ -19,8 +19,13 @@
                             <label for="description">Description:</label>
                             <textarea id="description" name="description" class="form-control" rows="3"    placeholder="Enter description">{{$category['description']}}</textarea>
                         </div>
+                        <div class="form-grop">
+                            <label>Uploaded Image</label>
+                                <div class="form-control">
+                        <img src="{{asset('image/'.$category['image'])}}" style="width:70px ; height:70px" alt="Img">
 
-                        {{-- <img src="{{asset('image/'.$info['image'])}}" style="width:70px ; height:70px" alt="Img"> --}}
+                                </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="image">Category Image:</label>

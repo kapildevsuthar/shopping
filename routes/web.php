@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
@@ -36,3 +37,6 @@ use App\Http\Controllers\ProductMediaController;
 
 Route::get('/products/{product}/media/create', [ProductMediaController::class, 'create'])->name('product_media.create');
 Route::post('/products/{product}/media', [ProductMediaController::class, 'store'])->name('product_media.store');
+// web.php
+
+Route::resource('/cart',CartController::class);

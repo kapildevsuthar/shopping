@@ -41,9 +41,19 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $info['name'] }}</h5>
                     <p class="card-text">{{ $info['description'] }}</p>
-                    <p class="card-text"><strong>Price:</strong> {{ $info['price'] }}</p>
-                    <p class="card-text"><strong>Discount:</strong> {{ $info['discount'] }}</p>
-                    <p class="card-text"><strong>Net Price:</strong> {{ $info['net_price'] }}</p>
+                    <span class="card-text">₹ {{ $info['net_price'] }}</span>
+                    <span class="card-text" style="color: red">
+                         <s>{{ $info['price'] }}</s>
+                    </span>
+                    <span class="card-text" style="color: blue"> {{ $info['discount'] }}% Off</span>
+                    
+                    <!-- Add to Cart Button -->
+                    <form action="{{ route('cart.store') }}" method="POST" class="mt-2">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $info['id'] }}">
+                        <button type="submit" class="btn btn-primary btn-block">Add to Cart</button>
+                    </form>
+                    
                 </div>
             </div>
         </div>
@@ -54,14 +64,18 @@
 <style>
     .carousel-image {
         width: 100%;
-        height: 200px; /* Adjust height as needed */
-        object-fit: cover;
+        height: 200px; /* Fixed height for images */
+        object-fit: contain; /* Ensure image is fully visible */
+        background-color: white; /* Add white background to fill space */
+        border: 1px solid white; /* Optional white border */
     }
 
     .card {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        border-radius: 15px; /* Add border radius */
+        overflow: hidden; /* Ensure rounded corners are visible */
     }
 
     .carousel {

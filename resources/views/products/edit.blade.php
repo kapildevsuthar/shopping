@@ -6,72 +6,56 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Product Page') }}</div>
-{{-- {{dd($product)}} --}}
-                
+
                 <div class="card-body">
-                    <form method="POST" action="/products/{{$product['id']}}">
+                    <form method="POST" action="{{ url('/products/' . $product['id']) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
+                        
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Product name') }}</label>
-
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control " name="name" required value = {{$product['name']}} autofocus placeholder = "Enter product name">
-
+                                <input id="name" type="text" class="form-control" name="name" required value="{{ $product['name'] }}" autofocus placeholder="Enter product name">
                             </div>
                         </div>
                        
-
                         <div class="row mb-3">
-                            <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('description') }}</label>
+                            <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
                             <div class="col-md-6">
-                                {{-- <input id="description" type="text" class="form-control " name="description"  value =  placeholder = "Enter product description"> --}}
-                                <textarea id="description"  class="form-control " name="description"   >{{$product['description']}}</textarea>
+                                <textarea id="description" class="form-control" name="description">{{ $product['description'] }}</textarea>
                             </div>
                         </div>
+
                         @php
-                         $scats=[];
-                         foreach($product->categoryids as $pcinfo){
-                            $scats[]=$pcinfo->category_id;
-                         }  
-                         @endphp
+                            $scats = $product->categoryids->pluck('category_id')->toArray();
+                        @endphp
                         <div class="mb-3">
                             <label for="category" class="col-md-4 col-form-label">{{ __('Product category name') }}</label>
-                    <select multiple>
-                            @foreach($data as $val){
-                    <option value="{{$val->id}}" {{(in_array($val->id,$scats))?"selected":""}}>{{$val->name}}</option>
-                    
-                            }
-                            @endforeach
-                    </select>
-                    </div>
+                            <select id="category" name="category[]" class="form-control" multiple>
+                                @foreach($data as $val)
+                                    <option value="{{ $val->id }}" {{ in_array($val->id, $scats) ? 'selected' : '' }}>{{ $val->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
                         <div class="row mb-3">
-                            <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('price') }}</label>
-
+                            <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('Price') }}</label>
                             <div class="col-md-6">
-                                <input id="price" type="number" class="form-control " name="price" oninput="calculatePrice()" value = {{$product['price']}} min= 0  placeholder = "Enter price">
-
+                                <input id="price" type="number" class="form-control" name="price" oninput="calculatePrice()" value="{{ $product['price'] }}" min="0" placeholder="Enter price">
                             </div>
                         </div>
 
-
-
                         <div class="row mb-3">
-                            <label for="discount" class="col-md-4 col-form-label text-md-end">{{ __('discount') }}</label>
-
+                            <label for="discount" class="col-md-4 col-form-label text-md-end">{{ __('Discount') }}</label>
                             <div class="col-md-6">
-                                <input id="discount" oninput="calculatePrice()" type="number" class="form-control " name="discount"  value = {{$product['discount']}} min = 0 max = 100 placeholder = "Enter discount">
-
+                                <input id="discount" oninput="calculatePrice()" type="number" class="form-control" name="discount" value="{{ $product['discount'] }}" min="0" max="100" placeholder="Enter discount">
                             </div>
                         </div>
-
-                        
 
                         <div class="row mb-3">
                             <label for="GST" class="col-md-4 col-form-label text-md-end">{{ __('GST') }}</label>
                             <div class="col-md-6">
-                                <input class="form-control"  type="text" list="gst" name="gstnumber" id="gstInput" value="{{$product['cgst'] + $product['sgst']}}" oninput="divideGST()" placeholder="Select GST rate">
+                                <input class="form-control" type="text" list="gst" name="gstnumber" id="gstInput" value="{{ $product['cgst'] + $product['sgst'] }}" oninput="divideGST()" placeholder="Select GST rate">
                                 <datalist id="gst">
                                     <option value="18"></option>
                                     <option value="12"></option>
@@ -84,13 +68,13 @@
                             <div class="row mb-3">
                                 <label for="cgst" class="col-md-4 col-form-label text-md-end">{{ __('CGST') }}</label>
                                 <div class="col-md-6">
-                                    <input id="cgst" type="number" class="form-control"  name="cgst" min="0" max="100" placeholder="Enter CGST" value = {{$product['cgst']}} readonly>
+                                    <input id="cgst" type="number" class="form-control" name="cgst" min="0" max="100" placeholder="Enter CGST" value="{{ $product['cgst'] }}" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="sgst" class="col-md-4 col-form-label text-md-end">{{ __('SGST') }}</label>
                                 <div class="col-md-6">
-                                    <input id="sgst" type="number" class="form-control" name="sgst" min="0" max="100" placeholder="Enter SGST" value = {{$product['sgst']}} readonly>
+                                    <input id="sgst" type="number" class="form-control" name="sgst" min="0" max="100" placeholder="Enter SGST" value="{{ $product['sgst'] }}" readonly>
                                 </div>
                             </div>
                         </div>
@@ -98,59 +82,31 @@
                         <div class="row mb-3">
                             <label for="net_price" class="col-md-4 col-form-label text-md-end">{{ __('Net Price') }}</label>
                             <div class="col-md-6">
-                                <input id="net_price" type="text" readonly class="form-control" name="net_price" min="0" placeholder="Net Price" value = {{$product['net_price']}}>
+                                <input id="net_price" type="text" readonly class="form-control" name="net_price" min="0" placeholder="Net Price" value="{{ $product['net_price'] }}">
                             </div>
                         </div>
-                        <div class="form-group">
+                        
+                        <div class="form-group mb-3">
                             <label for="image">Product Images:</label>
-                            <input type="file" accept="image/*" id="image" name="image">
-        
+                            <input type="file" accept="image/*" id="image" multiple name="image" class="form-control-file">
                         </div>
-                        @foreach ($data as $info)
-             
-                        @php 
-                         $files=[];
-                        //  if(isset($info->media[0]->file_path)){
-                        //     echo "hello";
-                        //  }
-                        //  else{
-                        //     echo "hey";
-                        //  }
-                        if(is_array($info)){
-                         foreach($info as $sinfo){
-                             $files[]=$sinfo['file_path'];
-                         }
-                        }
-                        // print_r($files);
-                        @endphp
-        
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $info['name'] }}</td>
-        
-                            @if(isset($info->media[0]->file_path))
-                            <td>
-                                {{-- loop stsrt --}}
-                                @for($a=0 ;$a<count($info->media);$a++)
-                                <img src="{{asset('image/'.$info->media[$a]['file_path'])}}" style="width:70px ; height:70px" alt="Img">
-                                @endfor
-        
-                            </td>
-        
-                            @else
-                            <td>
-                                <img src="{{asset('image/imgnotavl.png')}}" style="width:70px ; height:70px" alt="Img">
-                                
-                            </td>
-                            @endif
+
+                        @if ($product->media->count() > 0)
+                            <div class="mb-3">
+                                <label>Uploaded Images:</label>
+                                @foreach ($product->media as $media)
+                                    <div class="mb-2">
+                                        <img src="{{ asset('image/' . $media->file_path) }}" style="width:70px; height:70px;" alt="Media Image">
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
         
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Submit') }}
                                 </button>
-
-                              
                             </div>
                         </div>
                     </form>
@@ -160,41 +116,28 @@
     </div>
 </div>
 
-
 <script>
     function divideGST() {
         const gstValue = parseFloat(document.getElementById('gstInput').value) || 0;
         const halfGST = gstValue / 2;
         document.getElementById('cgst').value = halfGST;
         document.getElementById('sgst').value = halfGST;
-        calculatePrice()
+        calculatePrice();
     }
-    
+
     function calculatePrice() {
         const price = parseFloat(document.getElementById('price').value) || 0;
         const discount = parseFloat(document.getElementById('discount').value) || 0;
-        const gstType = document.querySelector('input[name="gst_type"]:checked') ? document.querySelector('input[name="gst_type"]:checked').value : 'cgst_sgst';
-        let cgst = 0, sgst = 0, igst = 0;
-    
-        if (gstType === 'cgst_sgst') {
-            cgst = parseFloat(document.getElementById('cgst').value) || 0;
-            sgst = parseFloat(document.getElementById('sgst').value) || 0;
-        } else {
-            igst = parseFloat(document.getElementById('igst').value) || 0;
-        }
-    
+        const cgst = parseFloat(document.getElementById('cgst').value) || 0;
+        const sgst = parseFloat(document.getElementById('sgst').value) || 0;
+
         const discountAmount = price * (discount / 100);
         const priceAfterDiscount = price - discountAmount;
-    
-        let gstAmount = 0;
-        if (gstType === 'cgst_sgst') {
-            gstAmount = priceAfterDiscount * (cgst / 100) + priceAfterDiscount * (sgst / 100);
-        } else {
-            gstAmount = priceAfterDiscount * (igst / 100);
-        }
-    
+
+        const gstAmount = priceAfterDiscount * (cgst / 100) + priceAfterDiscount * (sgst / 100);
         const netPrice = priceAfterDiscount + gstAmount;
+
         document.getElementById('net_price').value = netPrice.toFixed(2);
     }
-    </script>
+</script>
 @endsection

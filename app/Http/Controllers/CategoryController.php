@@ -108,8 +108,11 @@ class CategoryController extends Controller
             'description' =>[ 'max:255'],
             'image'=>""
         ]);
+        $nameOfFile=$category->image;
         if($request->file('image')){
-            
+            if($nameOfFile){
+                unlink("image\\$nameOfFile");
+            }
        $nameOfFile=time().'_'.$request->image->getClientOriginalName();
        //$path='image';
        $request->image->move('image',$nameOfFile);
