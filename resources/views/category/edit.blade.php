@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Edit Category') }}</div>
 
                 <div class="card-body">
-                    <form action="/category/{{$category['id']}}" method="POST">
+                    <form action="/category/{{$category['id']}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
                         <div class="form-group">
@@ -19,6 +19,15 @@
                             <label for="description">Description:</label>
                             <textarea id="description" name="description" class="form-control" rows="3"    placeholder="Enter description">{{$category['description']}}</textarea>
                         </div>
+
+                        {{-- <img src="{{asset('image/'.$info['image'])}}" style="width:70px ; height:70px" alt="Img"> --}}
+
+                        <div class="form-group">
+                            <label for="image">Category Image:</label>
+                            <input type="file" accept="image/*" id="image" name="image">
+        
+                        </div>
+                        
                         
                         <button type="submit" class="btn btn-success btn-block mt-2">Submit</button>
                     </form>

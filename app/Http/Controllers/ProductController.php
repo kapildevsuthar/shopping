@@ -177,7 +177,6 @@ ProductMedia::create([
         $validated = $request->validate([
             'name' => ['required', 'max:255'],
             'description' => [],
-            // 'mrp' => [],
             'price' => [],
             'discount' => [],
             'cgst' => [],
@@ -190,22 +189,22 @@ ProductMedia::create([
             // echo $val->getClientOriginalName();
             // echo "<br>";
         
-            $ext = $val->getClientOriginalExtension();
-            $name = $val->getClientOriginalName();
-            $nameOfFile=time().'.'.$name;
-            $path='image';
-            $val->move($path,$nameOfFile);
-            // $val->move('image',$nameOfFile);
+            // $ext = $val->getClientOriginalExtension();
+            // $name = $val->getClientOriginalName();
+            // $nameOfFile=time().'.'.$name;
+            // $path='image';
+            // $val->move($path,$nameOfFile);
+            // // $val->move('image',$nameOfFile);
         
         // request()->image->move(public_path('image'), $nameOfFile);
         
-        $file_type= $path.$nameOfFile;
+        // $file_type= $path.$nameOfFile;
         
-        ProductMedia::updateOrCreate([
-            'product_id' =>$data['id'],
-                "file_path"=>$nameOfFile,
-                "file_type"=>$ext
-        ]);
+        // ProductMedia::update([
+        //     'product_id' =>$data['id'],
+        //         "file_path"=>$nameOfFile,
+        //         "file_type"=>$ext
+        // ]);
         
 
         // Assign user_id to the authenticated user's ID
@@ -213,10 +212,10 @@ ProductMedia::create([
 
         // Create a new product record in the database using Eloquent ORM
         
-        $product->update($validated);
+        // $product->update($validated);
 
         // Redirect back to the products page with a success message
-        return redirect("/products")->with("success", "Data has been saved successfully");
+        // return redirect("/products")->with("success", "Data has been saved successfully");
     }
     }
     /**
@@ -233,4 +232,11 @@ ProductMedia::create([
             // Redirect the user to a different page with a success message
             return redirect()->route('products.index')->with('success', 'Product deleted successfully');
         }
+           public function list()
+    {
+        return view('products.list',['data'=>Product::with('media')->get()]);
+        
+    }
+
+    
 }

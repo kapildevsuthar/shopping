@@ -101,14 +101,10 @@
                                 <input id="net_price" type="text" readonly class="form-control" name="net_price" min="0" placeholder="Net Price" value = {{$product['net_price']}}>
                             </div>
                         </div>
-
-                        <div class="row mb-3">
-                            <div>
-                            {{-- <form action="/image-upload" > --}}
-                                {{-- @csrf --}}
-                                <input type="file" accept="image/*" multiple name="image[]">
-                            {{-- </form> --}}
-                            </div>
+                        <div class="form-group">
+                            <label for="image">Product Images:</label>
+                            <input type="file" accept="image/*" id="image" name="image">
+        
                         </div>
                         @foreach ($data as $info)
              

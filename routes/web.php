@@ -30,6 +30,7 @@ Route::resource('/category',CategoryController::class);
 Route::resource('/products',ProductController::class);
 // Route::delete('/category/delete',[CategoryController::class,'deleted']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/list', [App\Http\Controllers\ProductController::class, 'list'])->name('products.list');
 
 use App\Http\Controllers\ProductMediaController;
 

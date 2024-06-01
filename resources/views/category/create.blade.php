@@ -19,11 +19,10 @@
                             <textarea id="description" name="description" class="form-control" rows="3" placeholder="Enter description"></textarea>
                         </div>
                         
-<div class="row mb-3">
-    <div>
-        <input type="file" accept="image/*"  name="image">
+<div class="form-group">
+    <label for="image">Category Image:</label>
+    <input type="file" accept="image/*" id="image" name="image">
 
-    </div>
 </div>
 
                         

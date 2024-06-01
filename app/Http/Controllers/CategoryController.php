@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -104,8 +105,16 @@ class CategoryController extends Controller
             
         $validated = $request->validate([
             'name' => ['required','max:50'],
-            'description' =>[ 'max:255']
+            'description' =>[ 'max:255'],
+            'image'=>""
         ]);
+        if($request->file('image')){
+            
+       $nameOfFile=time().'_'.$request->image->getClientOriginalName();
+       //$path='image';
+       $request->image->move('image',$nameOfFile);
+      $validated['image']= $nameOfFile;
+        }
 
         //    $validated['user_id'] = Auth::id();
             // dd($validated);
@@ -135,4 +144,5 @@ class CategoryController extends Controller
     // {
     //     dd($category);
     // }
+    
 }
