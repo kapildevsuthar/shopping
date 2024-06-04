@@ -123,10 +123,6 @@ ProductMedia::create([
 
 }
 
-
-
-
-
         // Redirect back to the products page with a success message
         return redirect("/products")->with("success", "Data has been saved successfully");
     }
@@ -236,6 +232,13 @@ ProductMedia::create([
     {
         return view('products.list',['data'=>Product::with('media')->get()]);
         
+    }
+    public function mediadelete($id){
+      
+       $pdm= ProductMedia::find($id);
+       unlink('image/'.$pdm->file_path);
+       $pdm->delete();
+        return true;
     }
 
     

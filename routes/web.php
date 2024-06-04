@@ -5,7 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ProductMediaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,10 +33,23 @@ Route::resource('/products',ProductController::class);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/list', [App\Http\Controllers\ProductController::class, 'list'])->name('products.list');
 
-use App\Http\Controllers\ProductMediaController;
+
 
 Route::get('/products/{product}/media/create', [ProductMediaController::class, 'create'])->name('product_media.create');
 Route::post('/products/{product}/media', [ProductMediaController::class, 'store'])->name('product_media.store');
 // web.php
+Route::get('/mediadel/{id}', [ProductController::class, 'mediadelete']);
 
-Route::resource('/cart',CartController::class);
+Route::middleware('auth')->group(function () {
+    // Route::resource('/cart',CartController::class);
+
+Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('cart', [CartController::class, 'store'])->name('cart.store');
+Route::patch('cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::delete('cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+// web.php
+Route::patch('/cart/update', 'CartController@update')->name('cart.update');
+Route::delete('/cart/remove', 'CartController@remove')->name('cart.remove');
+
+
+});

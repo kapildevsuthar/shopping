@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+<form action="cart.index" method="post">
+    <a href="{{route('cart.index')}}" class="btn btn-primary mb-3 mx-5" > Go to Cart </a>
+</form>
+
 <div class="container">
     <div class="row">
         @foreach ($data as $info)
@@ -42,10 +46,10 @@
                     <h5 class="card-title">{{ $info['name'] }}</h5>
                     <p class="card-text">{{ $info['description'] }}</p>
                     <span class="card-text">₹ {{ $info['net_price'] }}</span>
-                    <span class="card-text" style="color: red">
+                    <span class="card-text" style="color: grey">
                          <s>{{ $info['price'] }}</s>
                     </span>
-                    <span class="card-text" style="color: blue"> {{ $info['discount'] }}% Off</span>
+                    <span class="card-text" style="color: green"> {{ $info['discount'] }}% Off</span>
                     
                     <!-- Add to Cart Button -->
                     <form action="{{ route('cart.store') }}" method="POST" class="mt-2">

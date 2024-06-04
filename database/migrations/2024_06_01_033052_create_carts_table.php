@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('quantity')->default(1);
             $table->timestamps();
 
-            $table->unique(['user_id', 'product_id']); // Ensures a product can only be in the cart once per user
+         //   $table->unique(['user_id', 'product_id']); // Ensures a product can only be in the cart once per user
         });
     }
 

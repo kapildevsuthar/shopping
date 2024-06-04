@@ -88,15 +88,17 @@
                         
                         <div class="form-group mb-3">
                             <label for="image">Product Images:</label>
-                            <input type="file" accept="image/*" id="image" multiple name="image" class="form-control-file">
+                            <input type="file" accept="image/*" id="image" multiple name="image[]" class="form-control-file">
                         </div>
 
                         @if ($product->media->count() > 0)
                             <div class="mb-3">
                                 <label>Uploaded Images:</label>
                                 @foreach ($product->media as $media)
-                                    <div class="mb-2">
+                                    <div class="mb-2" id="mi_{{$media['id']}}" title="Click cross for delete">
+                                       
                                         <img src="{{ asset('image/' . $media->file_path) }}" style="width:70px; height:70px;" alt="Media Image">
+                                        <span class="text-danger" onclick="dellmedia({{$media['id']}})" style='font-size:20px; cursor:pointer'>&#10006;</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -138,6 +140,21 @@
         const netPrice = priceAfterDiscount + gstAmount;
 
         document.getElementById('net_price').value = netPrice.toFixed(2);
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+    function dellmedia(id){
+        if(confirm("Do you really want to delete this image?")){
+        $.ajax({
+            url:'/mediadel/'+id,
+            type:"get",
+            success:function(r){
+                document.getElementById('mi_'+id).remove();
+                alert("Image Deleted!");
+            }
+        })
+    }
     }
 </script>
 @endsection

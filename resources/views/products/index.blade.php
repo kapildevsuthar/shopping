@@ -16,7 +16,7 @@
                 <tr>
                     <th>S.no.</th>                    
                     <th>Product Name</th>
-                    <th>Image</th>
+                    {{-- <th>Image</th> --}}
                     <th>Description</th>
                     <th>Price</th>
                     <th>Discount</th>
@@ -30,7 +30,7 @@
             <tbody>
                 @foreach ($data as $info)
              
-                @php 
+                {{-- @php 
                  $files=[];
                 if(is_array($info)){
                  foreach($info as $sinfo){
@@ -38,13 +38,13 @@
                  }
                 }
                 // print_r($files);
-                @endphp
+                @endphp --}}
 
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $info['name'] }}</td>
 
-                    @if(isset($info->media[0]->file_path))
+                    {{-- @if(isset($info->media[0]->file_path))
                     <td>
                         
                         @for($a=0 ;$a<count($info->media);$a++)
@@ -58,7 +58,7 @@
                         <img src="{{asset('image/imgnotavl.png')}}" style="width:70px ; height:70px" alt="Img">
                         
                     </td>
-                    @endif
+                    @endif --}}
 
                     <td>{{ $info['description'] }}</td>
                     <td>{{ $info['price'] }}</td>
