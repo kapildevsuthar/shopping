@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+// use App\Http\Controllers\Purchase;
 
 class UserPaymentController extends Controller
 {
@@ -14,7 +15,7 @@ class UserPaymentController extends Controller
      */
     public function index()
     {
-        //
+        return view('purchase.index');
     }
 
     /**
@@ -24,7 +25,8 @@ class UserPaymentController extends Controller
      */
     public function create()
     {
-        //
+        
+        return view("purchase.create");
     }
 
     /**
@@ -34,9 +36,40 @@ class UserPaymentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
+{
+    $request->validate([
+        'email' => 'required|email',
+        'name' => 'required|string|max:255',
+        'mobile' => 'required|string|max:15',
+        'address' => 'required|string|max:255',
+        'pincode' => 'required|numeric',
+        'locality' => 'required|string|max:255',
+    ]);
+
+    // Calculate the total price (you need to implement this logic based on your cart)
+    $totalPrice = $this->calculateTotalPrice();
+
+    $purchase = Purchase::store([
+        'email' => $request->email,
+        'name' => $request->name,
+        'mobile' => $request->mobile,
+        'address' => $request->address,
+        'pincode' => $request->pincode,
+        'locality' => $request->locality,
+        'total_price' => $totalPrice,
+    ]);
+
+    // Clear the cart (implement this logic as needed)
+
+    return redirect()->route('home')->with('success', 'Purchase created successfully!');
+}
+
+private function calculateTotalPrice()
+{
+    // Implement your logic to calculate the total price of items in the cart
+    // For example, you might loop through the items in the cart and sum their prices
+    return 100; // Example fixed total price
+}
 
     /**
      * Display the specified resource.

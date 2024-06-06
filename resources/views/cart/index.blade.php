@@ -19,18 +19,17 @@
                     </thead>
                     <tbody>
                         @foreach (session('cart') as $id => $details)
+                            @php
+                                $imagePath = file_exists(public_path('image/' . $details['image'])) ? asset('image/' . $details['image']) : asset('image/imgnotavl.png');
+                            @endphp
                             <tr data-id="{{ $id }}">
                                 <td>
-                                    <img src="{{ asset('image/' . $details['image']) }}" width="50" height="50" class="img-responsive"/>
+                                    <img src="{{ $imagePath }}" width="50" height="50" class="img-responsive"/>
                                 </td>
                                 <td>{{ $details['name'] }}</td>
                                 <td class="price">₹{{ $details['net_price'] }}</td>
                                 <td>
-                                    <div class="input-group input-group-sm">
-                                        <button class="btn btn-outline-secondary btn-sm decrease-quantity" type="button"><b>-</b></button>
-                                        <input type="number" value="{{ $details['quantity'] }}" class="form-control form-control-sm quantity" min="1" data-price="{{ $details['net_price'] }}" readonly/>
-                                        <button class="btn btn-outline-secondary btn-sm increase-quantity" type="button"><b>+</b></button>
-                                    </div>
+                                    <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity" min="1" data-price="{{ $details['net_price'] }}"/>
                                 </td>
                                 <td class="subtotal">₹{{ $details['net_price'] * $details['quantity'] }}</td>
                                 <td>
@@ -53,8 +52,9 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Cart Summary</h5>
-                    <p class="card-text">Total: ₹<span id="cart-total">{{ array_sum(array_map(function($details) { return $details['net_price'] * $details['quantity']; }, session('cart') ?? [])) }}</span></p>
-                    <a href="" class="btn btn-primary">Buy Now</a>
+                    <p class="card-text">Total: ₹<span id="cart-total">{{ array_sum(array_map(function($details)
+                     { return $details['net_price'] * $details['quantity']; }, session('cart') ?? [])) }}</span></p>
+                    <a href="purchase/create" class="btn btn-primary">Buy Now</a>
                 </div>
             </div>
         </div>
@@ -63,43 +63,45 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-function updateQuantity(input, change) {
-    const price = parseFloat(input.dataset.price);
-    const quantity = parseInt(input.value) + change;
-    if (quantity < 1) return;
+document.querySelectorAll('.quantity').forEach(function(input) {
+    input.addEventListener('input', function() {
+        const price = parseFloat(input.dataset.price);
+        const quantity = parseInt(input.value);
+        const subtotalCell = input.closest('tr').querySelector('.subtotal');
+        const newSubtotal = price * quantity;
 
-    input.value = quantity;
-    const subtotalCell = input.closest('tr').querySelector('.subtotal');
-    const newSubtotal = price * quantity;
-    subtotalCell.textContent = '₹' + newSubtotal.toFixed(2);
-    
-    const id = input.closest('tr').dataset.id;
-
-    $.ajax({
-        url: '{{ route("cart.update") }}',
-        method: 'patch',
-        data: {
-            _token: '{{ csrf_token() }}',
-            id: id,
-            quantity: quantity
-        },
-        success: function(response) {
-            document.getElementById('cart-total').textContent = response.total.toFixed(2);
-        }
-    });
-}
-
-document.querySelectorAll('.increase-quantity').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const input = button.closest('.input-group').querySelector('.quantity');
-        updateQuantity(input, 1);
+        subtotalCell.textContent = '₹' + newSubtotal.toFixed(2);
+        
+        updateCartTotal();
     });
 });
 
-document.querySelectorAll('.decrease-quantity').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const input = button.closest('.input-group').querySelector('.quantity');
-        updateQuantity(input, -1);
+function updateCartTotal() {
+    let total = 0;
+    document.querySelectorAll('.subtotal').forEach(function(subtotalCell) {
+        total += parseFloat(subtotalCell.textContent.replace('₹', ''));
+    });
+    document.getElementById('cart-total').textContent = total.toFixed(2);
+}
+
+document.querySelectorAll('.quantity').forEach(function(input) {
+    input.addEventListener('input', function() {
+        const id = input.closest('tr').dataset.id;
+        const quantity = input.value;
+
+        $.ajax({
+            url: '{{ route("cart.update") }}',
+            method: 'patch',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id,
+                quantity: quantity
+            },
+            success: function(response) {
+                input.closest('tr').querySelector('.subtotal').textContent = '₹' + response.subtotal.toFixed(2);
+                document.getElementById('cart-total').textContent = response.total.toFixed(2);
+            }
+        });
     });
 });
 </script>

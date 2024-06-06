@@ -54,14 +54,14 @@ class CartController extends Controller
     {
         if($request->id) {
             $cart = session()->get('cart');
-
+            
             if(isset($cart[$request->id])) {
                 unset($cart[$request->id]);
-
                 session()->put('cart', $cart);
             }
 
-            return redirect()->back()->with('success', 'Product removed successfully');
+            return redirect()->route('cart.index')->with('success', 'Product removed successfully!');
         }
     }
+
 }

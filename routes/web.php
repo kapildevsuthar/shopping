@@ -6,6 +6,10 @@ use App\Http\Controllers\CartController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductMediaController;
+use App\Http\Controllers\UserPaymentController;
+use App\Http\Controllers\PurchaseController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,7 +35,7 @@ Route::resource('/category',CategoryController::class);
 Route::resource('/products',ProductController::class);
 // Route::delete('/category/delete',[CategoryController::class,'deleted']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/list', [App\Http\Controllers\ProductController::class, 'list'])->name('products.list');
+Route::get('/list', [App\Http\Controllers\ProductController::class, 'list'])->name('product.list');
 
 
 
@@ -41,15 +45,17 @@ Route::post('/products/{product}/media', [ProductMediaController::class, 'store'
 Route::get('/mediadel/{id}', [ProductController::class, 'mediadelete']);
 
 Route::middleware('auth')->group(function () {
-    // Route::resource('/cart',CartController::class);
+
 
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('cart', [CartController::class, 'store'])->name('cart.store');
 Route::patch('cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::delete('cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-// web.php
 Route::patch('/cart/update', 'CartController@update')->name('cart.update');
-Route::delete('/cart/remove', 'CartController@remove')->name('cart.remove');
+Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/purchase/create', [PurchaseController::class, 'create'])->name('purchase.create');
+Route::post('/purchase/store', [PurchaseController::class, 'store'])->name('purchase.store');
+
 
 
 });

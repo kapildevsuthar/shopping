@@ -2,7 +2,7 @@
 
 @section('content')
 <form action="cart.index" method="post">
-    <a href="{{route('cart.index')}}" class="btn btn-primary mb-3 mx-5" > Go to Cart </a>
+    <a href="{{route('cart.index')}}" class="btn btn-primary mb-3 mx-5"> Go to Cart </a>
 </form>
 
 <div class="container">
@@ -17,7 +17,7 @@
             }
         @endphp
 
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
             <div class="card h-100">
                 <div id="carouselExample{{ $loop->index }}" class="carousel slide">
                     <div class="carousel-inner">
