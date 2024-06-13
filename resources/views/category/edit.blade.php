@@ -13,13 +13,13 @@
                         @method('PATCH')
                         <div class="form-group">
                             <label for="name">Category Name:</label>
-                            <input type="text" id="name" name="name" class="form-control" value = "{{$category['name']}}" required autofocus placeholder="Enter category">
+                                
                         </div>
                         <div class="form-group">     
                             <label for="description">Description:</label>
                             <textarea id="description" name="description" class="form-control" rows="3"    placeholder="Enter description">{{$category['description']}}</textarea>
                         </div>
-                        <div class="form-grop">
+                        <div class="form-group">
                             <label>Uploaded Image</label>
                                 <div class="form-control">
                         <img src="{{asset('image/'.$category['image'])}}" style="width:70px ; height:70px" alt="Img">

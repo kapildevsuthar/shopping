@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Cart;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
     public function index()
     {
-        $cart = session()->get('cart', []);
+        $cart=Cart::where('user_id', Auth::id())->get();
+        
+       // $cart = session()->get('cart', []);
         return view('cart.index', compact('cart'));
     }
 

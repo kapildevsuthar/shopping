@@ -11,32 +11,32 @@ class PurchaseController extends Controller
     {
         return view('purchase.create');
     }
+    
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'name' => 'required|string|max:255',
-            'mobile_no' => 'required|string|max:15',
-            'address' => 'required|string|max:255',
-            'pincode' => 'required|numeric',
-            'locality' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'mobile' => 'required|string|max:15',
+        'address' => 'required|string|max:255',
+        'pincode' => 'required|numeric',
+        'locality' => 'required|string|max:255',
+        'total_price' => 'required|numeric',
+    ]);
 
-        $purchase = Purchase::create([
-            'email' => $request->email,
-            'name' => $request->name,
-            'mobile' => $request->mobile,
-            'address' => $request->address,
-            'pincode' => $request->pincode,
-            'locality' => $request->locality,
-            'total_price' => 0, // Adjust as per your logic
-        ]);
+    $info = [
+        'name' => $request->name,
+        'email' => $request->email,
+        'mobile' => $request->mobile,
+        'address' => $request->address,
+        'pincode' => $request->pincode,
+        'locality' => $request->locality,
+        'total_price' => $request->total_price,
+    ];
 
-        if ($purchase) {
-            return redirect()->route('home')->with('success', 'Purchase created successfully!');
-        } else {
-            return redirect()->back()->with('error', 'Failed to create purchase.');
-        }
-    }
+    Purchase::create($info);
+
+    return redirect()->route('home')->with('success', 'Purchase created successfully!');
+}
 }

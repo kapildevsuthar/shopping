@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity')->default(1);
+            // $table->string('file_path');
             $table->timestamps();
 
          //   $table->unique(['user_id', 'product_id']); // Ensures a product can only be in the cart once per user

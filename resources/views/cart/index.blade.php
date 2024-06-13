@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-8">
             <h4>Shopping Cart</h4>
-            @if (session('cart'))
+            @if ($cart)
                 <table class="table">
                     <thead>
                         <tr>
@@ -18,11 +18,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (session('cart') as $id => $details)
-                            @php
-                                $imagePath = file_exists(public_path('image/' . $details['image'])) ? asset('image/' . $details['image']) : asset('image/imgnotavl.png');
+                        @foreach ($cart as $id => $details)
+                            
+                            {{-- {{$details}}   --}}
+                                @php
+                                // $details=$details->toArray();
+                                $imagePath = file_exists(asset('image/' . $details['image'])) ?
+                                 asset('image/' . $details['image']) : asset('image/imgnotavl.png');
                             @endphp
                             <tr data-id="{{ $id }}">
+                                
                                 <td>
                                     <img src="{{ $imagePath }}" width="50" height="50" class="img-responsive"/>
                                 </td>
@@ -53,7 +58,8 @@
                 <div class="card-body">
                     <h5 class="card-title">Cart Summary</h5>
                     <p class="card-text">Total: ₹<span id="cart-total">{{ array_sum(array_map(function($details)
-                     { return $details['net_price'] * $details['quantity']; }, session('cart') ?? [])) }}</span></p>
+                     { return 0;//$details['net_price'] * $details['quantity'];
+                      }, $cart->toArray() ?? [])) }}</span></p>
                     <a href="purchase/create" class="btn btn-primary">Buy Now</a>
                 </div>
             </div>
